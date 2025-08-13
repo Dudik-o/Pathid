@@ -7,7 +7,7 @@ env:
   IMAGE_NAME: pod-echo
   IMAGE_TAG: "0.1"
   KIND_CLUSTER: pathid
-  TF_DIR: .            # ← change if your Terraform lives elsewhere
+  TF_DIR: .
 
 jobs:
   deploy:
