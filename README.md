@@ -59,5 +59,4 @@ You can run this pipeline locally using [Act](https://github.com/nektos/act):
 act workflow_dispatch \
   -W .github/workflows/deploy.yml \
   -P ubuntu-latest=ghcr.io/catthehacker/ubuntu:act-latest \
-  --container-architecture linux/amd64 \
-  --container-options "-v /var/run/docker.sock:/var/run/docker.sock"
+  --container-architecture linux/amd64
