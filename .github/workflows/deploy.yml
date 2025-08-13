@@ -11,7 +11,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,6 +21,7 @@ jobs:
         with:
           terraform_version: 1.8.5
 
+      # act-only tooling
       - name: Install kind (act only)
         if: ${{ env.ACT }}
         run: |
@@ -36,25 +37,16 @@ jobs:
       - name: Build Docker image
         run: docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
 
-      - name: Prepare kubeconfig (act only)
-        if: ${{ env.ACT }}
-        run: |
-          echo "KUBECONFIG=/root/.kube/kind-pathid.yaml" >> $GITHUB_ENV
-          echo "TF_VAR_kubeconfig_path=/root/.kube/kind-pathid.yaml" >> $GITHUB_ENV
-          test -f /root/.kube/kind-pathid.yaml || (echo "missing kubeconfig" && exit 1)
-
-      - name: Load image into Kind (act only)
-        if: ${{ env.ACT }}
-        run: |
-          kind load docker-image ${IMAGE_NAME}:${IMAGE_TAG} --name ${KIND_CLUSTER}
-          kubectl cluster-info
-
+      # ⛔️ DO NOT put an `if:` here
       - name: Terraform init/plan/apply
         env:
           TF_IN_AUTOMATION: "true"
+          TF_VAR_kind_name:  ${{ env.KIND_CLUSTER }}
           TF_VAR_image_repo: ${{ env.IMAGE_NAME }}
           TF_VAR_image_tag:  ${{ env.IMAGE_TAG }}
+        shell: bash
         run: |
+          set -euxo pipefail
           terraform -chdir=${TF_DIR} init
           terraform -chdir=${TF_DIR} plan -out=tf.plan
           terraform -chdir=${TF_DIR} apply -auto-approve tf.plan
