@@ -1,0 +1,6 @@
+*.tfstate*
+.terraform
+.terraform.lock.hcl
+pathid-config
+my-cluster-config
+terraform.tfstate
