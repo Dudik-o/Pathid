@@ -44,12 +44,13 @@ Terraform provisions the complete local Kubernetes environment in Kind.
 #### Podinfo
 - A demo microservice deployed using the [stefanprodan/podinfo](https://github.com/stefanprodan/podinfo) Helm chart.
 - Useful for testing deployments, service routing, and ingress.
-
+- provides an `/podinfo` endpoint, accessible via `http://localhost/podinfo`
 #### Node.js Application (Pod Echo)
 - Built inside this pipeline from the Dockerfile in the repository.
-- Displays the Pod name and Pod ID in the response.
+- Displays the Pod name and Pod ID in the response. 
 - Includes a `/health` endpoint, designed for future use as a readiness probe in Kubernetes.  
   This path can later be referenced in a `readinessProbe` configuration to ensure the pod is ready before accepting traffic.
+- Provides an `/info` endpoint, accessible via `http://localhost/info`
 
 ## Local Development & Testing
 
