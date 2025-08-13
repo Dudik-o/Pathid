@@ -35,7 +35,7 @@ jobs:
           chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
 
       - name: Build Docker image
-        run: docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+        run: docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ./pod-echo/app
 
       # ⛔️ DO NOT put an `if:` here
       - name: Terraform init/plan/apply
